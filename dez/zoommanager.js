@@ -230,6 +230,7 @@ ZoomManager.error = function (errmsg) {
 	// Display only the first error, until the ZoomManager in reinitialized
 	if (!ZoomManager.status.error) {
 		ZoomManager.status.error = true;
+
 		UI.error(errmsg);
 		throw new Error(errmsg);
 	}

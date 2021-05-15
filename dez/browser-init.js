@@ -24,8 +24,5 @@
     document.getElementById("url").value = startURL;
   }
 
-  document.querySelector("#popup > button[title=Close]").addEventListener("click", function () {
-    document.getElementById("popup").style.bottom = "-500px";
-  })
   
 })();

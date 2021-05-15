@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xml:lang="EN" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+			</head>
+			<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+			<script type="text/javascript" src="https://js.arcgis.com/4.18/"></script>
+			<script type="text/javascript" src="ZoomifyImageViewerEnterprise-min.js"></script>			
+			<link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
+			<link rel="stylesheet" href="https://images.natgeomaps.com/PROD_ZOOM/css/zoom.css">
+			<style type="text/css">
+html,
+body,
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+#photo,
+#chooser {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+#photo {
+  height: 100%;
+}
+#expand-one {
+  width:100%;
+  /*height:10px;*/
+  background: black;
+  color: white;
+    position:absolute;
+    bottom:0px;
+    border: 1px solid #000;
+
+}
+#chooser {
+    position:absolute;
+    bottom:0px;
+    width:100%;
+    height:100px;
+    border: 1px solid red;
+    display:none;
+  background: #fff;
+  text-align: center;
+  padding-bottom: 1em;
+
+}
+#chooser a {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 10px;
+}
+#chooser a img {
+  border: none;
+  height: 90px;
+}
+
+.esri-view-width-xlarge .esri-popup__main-container,
+.esri-view-width-large .esri-popup__main-container,
+.esri-view-width-medium .esri-popup__main-container {
+  max-height: 1000px !important;
+  /*needed to override default css */
+  max-width: 250px !important;
+}
+.Modal {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background: #92d04b7a;
+  z-index: 9999;
+}
+.Modal .Close {
+  position: absolute;
+  top: 25px;
+  right: 65px;
+  z-index: 999;
+  cursor: pointer;
+}
+</style>
+	<body>
+	
+
+
+  <div id="photo"></div>
+  <div id="expand-one">🔼 Pages 🔼
+  <div id="chooser"></div>
+  </div>
+
+
+<button onclick="open_popup('DM01020628');">open</button>
+<script type="text/javascript" >
+
+function open_popup(code) {
+  //$(".Modal").fadeToggle();
+  initMap("https://images.natgeomaps.com/PROD_ZOOM/" + code, 3, "_0");
+}
+
+
+function buttonPress() {
+  var title =
+    "https://images.natgeomaps.com/PROD_ZOOM/" +
+    document.getElementById("map_id").value;
+
+  initMap(title, 3, "_0");
+}
+function initMap(product_code, num_images, first_image) {
+  console.log(product_code);
+  if (typeof num_images === "undefined") {
+    num_images = 1;
+  }
+  if (typeof first_image === "undefined") {
+    first_image = "_0";
+  }
+
+  first_image = parseInt(first_image.substring(1));
+  var links = "";
+
+  for (var i = first_image; i < first_image + num_images; i++) {
+    var image_path = product_code + "_" + i;
+    links +=
+      '<a href="#" data-image-path="' +
+      image_path +
+      '"><img src="' +
+      image_path +
+      '/TileGroup0/0-0-0.jpg"/></a>';
+  }
+
+  $("#chooser").html(links);
+  $("#chooser a").on("click", function (e) {
+    var path = $(this).data("image-path");
+
+    $.ajax({
+      url: product_code + "_" + first_image + "/ImageProperties.xml",
+      //type: 'GET',
+      //crossDomain: true,
+      dataType: "html"
+    }).done(function (result) {
+      var options = "zImageProperties=" + result.replace(/"/g, "'");
+      Z.Viewer.setImagePath(path, options);
+    });
+    e.preventDefault();
+  });
+
+  $.ajax({
+    url: product_code + "_" + first_image + "/ImageProperties.xml",
+    //type: 'GET',
+    //crossDomain: true,
+    dataType: "html"
+  }).done(function (result) {
+    console.log(result.replace(/"/g, "'"));
+
+    Z.showImage(
+      "photo",
+      product_code + "_" + first_image,
+      "zToolbarInternal=1&" +
+      //"zSkinPath=Assets/Skins/Default&"+
+      //"zMousePan=1&"+
+        "zMouseWheel=1&" +
+        //"zDoubleClickZoom=1&" +
+        "zNavigatorVisible=0&" +
+        "zImageProperties=" +
+        result.replace(/"/g, "'")
+    );
+  });
+}
+
+$("#expand-one").click(function(){
+    $("#chooser").slideDown();
+});
+$("#expand-one").mouseleave(function(){
+    $("#chooser").slideUp();
+});
+</script>
+	</body>
+	</html>

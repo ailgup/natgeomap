@@ -1,0 +1,178 @@
+html,
+body,
+#viewDiv,
+.whole{
+  padding: 0;
+  margin: 0;
+  /*  width: 100%;*/
+  height: 100%;
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+
+  transition: margin-left 0.5s;
+}
+#viewDiv{
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+    height:100%;
+}
+.layer-button{
+  
+}
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.sidenav {
+  height: 100%;
+  width: 20;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: ##dedede;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+#chooser {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#expand-one {
+  width: 100%;
+  height: 20px;
+  background: black;
+  text-align: center;
+  color: white;
+  position: absolute;
+  bottom: 0px;
+  border: 1px solid #000;
+}
+#chooser {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 100px;
+  border: 1px solid red;
+  display: none;
+  background: #fff;
+  text-align: center;
+  padding-bottom: 1em;
+}
+#chooser a {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 10px;
+}
+#chooser a img {
+  border: none;
+  height: 90px;
+}
+.esri-popup__main-container {
+  width: fit-content !important;
+}
+.esri-popup__content{
+  margin: 0px 0px 0px 0px;
+}
+/* Remove outline around map on click*/
+.esri-view .esri-view-surface--inset-outline:focus::after {
+  outline: none !important;
+}
+.Modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: #92d04b7a;
+}
+.modal-content {
+  margin: auto;
+
+  border: 1px solid #888;
+  width: 100%;
+  height: 100%;
+}
+.Modal .esri-icon-swap {
+  color: white;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    border: 1px solid #AEAEAE;
+    border-radius: 30px;
+    background: #605f617a;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+  z-index: 10;
+}
+.Modal .Close {
+  color: #ffff;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 40px;
+    font-weight: bold;
+    border: 1px solid #AEAEAE;
+    border-radius: 30px;
+    background: #605f617a;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+  z-index: 10;
+}
+.Modal .Close .text{
+  margin-top: -7px;
+}
+.Close:hover,
+.Close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+#layerlistdiv {
+  display: none;
+  text-align: center;
+}
+.hover-button{
+    position: relative;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    background: white;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 50px;
+
+}
+.hover-button .esri-icon-drag-horizontal, .esri-icon-drag-horizontal:link{
+margin-top: 10px;
+    font-size: 32px;
+  color: black;
+}
+.esri-attribution{
+  visibility: hidden;
+}

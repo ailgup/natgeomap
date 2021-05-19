@@ -22,6 +22,8 @@
   var startURL = window.location.hash.slice(1);
   if (startURL) {
     document.getElementById("url").value = startURL;
+	ZoomManager.proxy_tiles="https://ophir.alwaysdata.net/dezoomify/proxy.php";
+    ZoomManager.open(startURL);
   }
 
   

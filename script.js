@@ -1,4 +1,3 @@
-$(document).ready(function () {});
 var map;
 require([
   "esri/Map",
@@ -37,7 +36,7 @@ require([
   };
   
   function buildPopupContent(event){
-      console.dir(event);
+      //console.dir(event);
       const { graphic } = event;
       var title = graphic.attributes.MapTitle;
       var code = graphic.attributes.ProdCode;

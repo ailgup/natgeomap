@@ -1,4 +1,5 @@
 var map;
+
 require([
   "esri/Map",
   "esri/layers/FeatureLayer",
@@ -26,22 +27,22 @@ require([
    * To load a WebMap from an on-premise portal, set the portal
    * url with esriConfig.portalUrl.
    ************************************************************/
-  const map = new Map({
+  var map = new Map({
     basemap: "streets"
     //basemap: "topo-vector"
   });
-  const template = {
+  var template = {
     title: "",
     content: buildPopupContent
   };
   
   function buildPopupContent(event){
       //console.dir(event);
-      const { graphic } = event;
+      var graphic  = event.graphic;
       var title = graphic.attributes.MapTitle;
       var code = graphic.attributes.ProdCode;
       var fid = graphic.attributes.FID;
-
+	  var div = document.createElement("div");
       console.log(code);
       if (title === undefined) {
         var prom = graphic.layer.queryFeatures().then(function (results) {
@@ -54,7 +55,7 @@ require([
             }
           });
         });
-              var div = document.createElement("div");
+              
               div.className = "";
               div.innerHTML =
                 "<div style='width:fit-content;margin: 0px;' onclick=\"open_popup('" +
@@ -72,7 +73,6 @@ require([
         
      else {
         console.log("F:" + fid + " T:" + title + " C:" + code);
-        var div = document.createElement("div");
         div.className = "";
         div.innerHTML =
           "<div style='width:fit-content;margin: 0px;' onclick=\"open_popup('" +
@@ -85,7 +85,7 @@ require([
         return div;
       }
     
-  };
+  }
 
   var trailsMapsStyle = {
     type: "simple", // autocasts as new SimpleRenderer()
@@ -123,7 +123,7 @@ require([
       }
     }
   };
-  const labelClass = {
+  var labelClass = {
     // autocasts as new LabelClass()
     symbol: {
       type: "text", // autocasts as new TextSymbol()
@@ -140,7 +140,7 @@ require([
       expression: "$feature.MapTitle"
     }
   };
-  const featureLayer = new FeatureLayer({
+  var featureLayer = new FeatureLayer({
     title: "Trails Illustrated",
     url:
       "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",
@@ -150,7 +150,7 @@ require([
     renderer: trailsMapsStyle
   });
 
-  const adventureMaps = new FeatureLayer({
+  var adventureMaps = new FeatureLayer({
     title: "Adventure Maps",
     visible: false,
     url:
@@ -160,7 +160,7 @@ require([
     renderer: adventureMapsStyle
   });
 
-  const localMaps = new FeatureLayer({
+  var localMaps = new FeatureLayer({
     title: "Local Maps",
     visible: false,
     url:
@@ -169,7 +169,7 @@ require([
     popupTemplate: template,
     renderer: localMapsStyle
   });
-  const cityMaps = new FeatureLayer({
+  var cityMaps = new FeatureLayer({
     title: "City Maps",
     visible: false,
     url:
@@ -183,7 +183,7 @@ require([
   map.add(localMaps);
   map.add(cityMaps);
   // Create the MapView
-  const view = new MapView({
+  var view = new MapView({
     container: "viewDiv",
     map: map,
     zoom: 8,
@@ -242,7 +242,7 @@ require([
     }
     element.id = "layer-button-" + arrayItem.title;
     element.className = "layer-button";
-    let map_images = [
+    var map_images = [
       {
         name: "Trails Illustrated",
         url:
@@ -264,7 +264,10 @@ require([
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/adventure-maps.png"
       }
     ];
-    let url = map_images.find((x) => x.name === arrayItem.title).url;
+    var url = map_images.find(function(x){return x.name === arrayItem.title;}).url;
+    
+    //    var url = map_images.find((x) => x.name === arrayItem.title).url;
+
     element.innerHTML =
       '<img src="' + url + '" height=50px><br>' + arrayItem.title;
     element.addEventListener("click", function (evt) {
@@ -380,8 +383,8 @@ function initMap(product_code, num_images, first_image) {
 }
 $(".esri-icon-swap").click(function () {
   console.log("flip");
-  let url = Z.Viewer.getImagePath();
-  let cur = url.slice(-1);
+  var url = Z.Viewer.getImagePath();
+  var cur = url.slice(-1);
   console.log("url:" + url + " cur:" + cur);
   if (cur === "1") {
     getAjaxandSetImagePath(url.slice(0, -2), "2");

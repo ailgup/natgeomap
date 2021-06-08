@@ -278,13 +278,13 @@ function open_popup(code) {
 
 $(".Close").click(function () {
   var modal = document.getElementById("Modal");
-  modal.style.display = "none";
+  modal.style.visibility = "hidden";
 });
 
 $(document).keydown(function (e) {
   if (e.keyCode == 27) {
     var modal = document.getElementById("Modal");
-    modal.style.display = "none";
+    modal.style.visibility = "hidden";
   }
 });
 

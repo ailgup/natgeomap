@@ -122,7 +122,7 @@ display:none;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  background-color: #92d04b7a;
+  background-color: rgba(146, 208, 75,0.48);
 }
 .modal-content {
   margin: auto;

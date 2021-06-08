@@ -272,7 +272,7 @@ require([
 //});
 function open_popup(code) {
   var modal = document.getElementById("Modal");
-  modal.style.display = "block";
+  modal.style.visibility = "visible";
   initMap("https://images.natgeomaps.com/PROD_ZOOM/" + code, 2, "_1");
 }
 

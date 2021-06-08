@@ -101,6 +101,7 @@ body,
 width:auto;
 }
 .esriPopup .sizer .content {
+  width: intrinsic; /* safari */
   width: fit-content !important;
 }
 .esriPopup .contentPane {
@@ -114,7 +115,7 @@ display:none;
   outline: none !important;
 }
 .Modal {
-  display: none; /* Hidden by default */
+  visibility: hidden; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;

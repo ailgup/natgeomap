@@ -17,8 +17,19 @@ body,
   width:100%;
     height:100%;
 }
-.layer-button{
-  
+.esriSimpleSliderTL{
+  right: 20px;
+    left: auto;
+}
+#sidenav-button{
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 3;
+    background: white;
+    padding: 10px;
+    border-color: 1px solid grey;
+    border-radius: 5px;
 }
 .sidenav .closebtn {
   position: absolute;
@@ -34,7 +45,7 @@ body,
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: ##dedede;
+  background-color: #dedede;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -86,11 +97,17 @@ body,
   border: none;
   height: 90px;
 }
-.esri-popup__main-container {
+.esriPopup .sizer {
+width:auto;
+}
+.esriPopup .sizer .content {
   width: fit-content !important;
 }
-.esri-popup__content{
-  margin: 0px 0px 0px 0px;
+.esriPopup .contentPane {
+  padding: 0px;
+}
+.actionsPane {
+display:none;
 }
 /* Remove outline around map on click*/
 .esri-view .esri-view-surface--inset-outline:focus::after {
@@ -114,44 +131,55 @@ body,
   height: 100%;
 }
 .Modal .esri-icon-swap {
-  color: white;
-    position: fixed;
     bottom: 10px;
     right: 10px;
-    font-size: 25px;
-    font-weight: bold;
-    border: 1px solid #AEAEAE;
-    border-radius: 30px;
-    background: #605f617a;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-  z-index: 10;
 }
-.Modal .Close {
-  color: #ffff;
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    font-size: 40px;
-    font-weight: bold;
-    border: 1px solid #AEAEAE;
-    border-radius: 30px;
-    background: #605f617a;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-  z-index: 10;
+.Modal .esri-icon-download {
+    bottom: 10px;
+    right: 100px;
 }
-.Modal .Close .text{
-  margin-top: -7px;
+.Modal .esri-icon-download .download-text {
+ font-size:10px; 
 }
-.Close:hover,
-.Close:focus {
+.map-button:hover,
+.map-button:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
 }
+.download-text{
+      position: absolute;
+    bottom: 14px;
+    right: 115px;
+    color: white;
+    z-index: 11;
+    font-size: 8pt;
+}
+
+.map-button {
+    color: white;
+    position: fixed;
+    bottom: 10px;
+    right: 100px;
+    /* text-align: start; */
+    font-size: 30px;
+    font-weight: bold;
+    border: 1px solid #AEAEAE;
+    border-radius: 30px;
+    background: #605f617a;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 40px;
+    z-index: 10;
+}
+.Modal .Close {
+    top: 10px;
+    right: 10px;
+    font-size: 60px;
+    line-height: 50px;
+}
+
 #layerlistdiv {
   display: none;
   text-align: center;

@@ -2,8 +2,8 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - Mapper</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://js.arcgis.com/4.18/esri/themes/light/main.css'>
+  <title>CodePen - Mapper 3.x</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://js.arcgis.com/3.36/esri/css/esri.css'>
 <link rel='stylesheet' href='https://images.natgeomaps.com/PROD_ZOOM/css/zoom.css'><link rel="stylesheet" href="./style.css">
 
 </head>
@@ -17,8 +17,9 @@
 </div>
 <div id="viewDiv"></div>
 <div id="Modal" class="Modal">
-  <span class="Close"><p class="text">&times;</p></span>
-  <span id="flip-map" class="esri-icon-swap"></span>
+  <span class="map-button Close">&times;</span>
+  <span id="flip-map" class="map-button esri-icon-swap"></span>
+  <span id="download-png" class="map-button esri-icon-download"></span><span class="download-text">PNG</span>
   <div id="modal-map" class="modal-content"></div>
 
   <div id="expand-one">
@@ -32,7 +33,7 @@
 <button onclick="open_popup('DM01020628');">open</button>-->
 <!-- partial -->
   <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
-<script src='https://js.arcgis.com/4.15/'></script>
+<script src='https://js.arcgis.com/3.36'></script>
 <script src='https://ailgup.github.io/natgeomap/ZoomifyImageViewerEnterprise-min.js'></script><script  src="./script.js"></script>
 
 </body>

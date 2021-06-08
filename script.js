@@ -1,23 +1,19 @@
+$(document).ready(function () {});
 var map;
-
 require([
-  "esri/Map",
+  "esri/map",
   "esri/layers/FeatureLayer",
-  "esri/widgets/Editor",
-  "esri/views/MapView",
-  "esri/widgets/LayerList",
-  "esri/popup/content/AttachmentsContent",
-  "esri/popup/content/TextContent",
-  "esri/widgets/Search"
+  "esri/dijit/LayerList",
+  "esri/dijit/Search",
+  "esri/dijit/Popup", 
+  "esri/dijit/PopupTemplate"
 ], function (
   Map,
   FeatureLayer,
-  Editor,
-  MapView,
   LayerList,
-  AttachmentsContent,
-  TextContent,
-  Search
+  Search,
+  Popup,
+  PopupTemplate
 ) {
   /************************************************************
    * Creates a new WebMap instance. A WebMap must reference
@@ -27,52 +23,41 @@ require([
    * To load a WebMap from an on-premise portal, set the portal
    * url with esriConfig.portalUrl.
    ************************************************************/
-  var map = new Map({
-    basemap: "streets"
+  const map = new Map("viewDiv",{
+    basemap: "streets",
     //basemap: "topo-vector"
+    zoom: 8,
+    center: [-71.085421, 42.34745],
+    popup: {
+      actions: [],
+      alignment: "auto",
+      dockOptions: {
+        buttonEnabled: false,
+        // Disable the dock button so users cannot undock the popup
+        // Dock the popup when the size of the view is less than or equal to 600x1000 pixels
+        breakpoint: {
+          width: 0,
+          height: 0
+        }
+      },
+      visibleElements: {
+        closeButton: false
+      }
+    }
   });
-  var template = {
+  const template = {
     title: "",
     content: buildPopupContent
   };
   
   function buildPopupContent(event){
-      //console.dir(event);
-      var graphic  = event.graphic;
-      var title = graphic.attributes.MapTitle;
-      var code = graphic.attributes.ProdCode;
-      var fid = graphic.attributes.FID;
-	  var div = document.createElement("div");
-      console.log(code);
-      if (title === undefined) {
-        var prom = graphic.layer.queryFeatures().then(function (results) {
-          results.features.forEach(function (f) {
-            if (f.attributes.FID === fid) {
-              console.log("FOUND");
-              title = f.attributes.MapTitle;
-              code = f.attributes.ProdCode;
-              console.log("F:" + fid + " T:" + title + " C:" + code);
-            }
-          });
-        });
-              
-              div.className = "";
-              div.innerHTML =
-                "<div style='width:fit-content;margin: 0px;' onclick=\"open_popup('" +
-                code +
-                '\')" class="popup-link">' +
-                //'<h3>'+title +'</h3>'+
-                '<img class="esriPopupMediaImage" height="100%" src="http://images.natgeomaps.com/PROD_SM_250px/' +
-                code +
-                '_0_SM.jpg" style=""></div>';
-       
-        graphic.popupTemplate = {content:div};
-        console.dir(graphic);
-        return;
-        }
-        
-     else {
+    console.dir(event);
+      var title = event.attributes.MapTitle;
+      var code = event.attributes.ProdCode;
+      var fid = event.attributes.FID;
+
         console.log("F:" + fid + " T:" + title + " C:" + code);
+        var div = document.createElement("div");
         div.className = "";
         div.innerHTML =
           "<div style='width:fit-content;margin: 0px;' onclick=\"open_popup('" +
@@ -83,9 +68,9 @@ require([
           code +
           '_0_SM.jpg" style=""></div>';
         return div;
-      }
+      
     
-  }
+  };
 
   var trailsMapsStyle = {
     type: "simple", // autocasts as new SimpleRenderer()
@@ -103,7 +88,7 @@ require([
     type: "simple", // autocasts as new SimpleRenderer()
     symbol: {
       type: "simple-fill", // autocasts as new SimpleFillSymbol()
-      color: [255, 255, 0, 0.203922],
+      color: [153, 85, 144, 0.203922],
       outline: {
         // makes the outlines of all features consistently light gray
         color: [56, 168, 0, 0.5],
@@ -123,7 +108,7 @@ require([
       }
     }
   };
-  var labelClass = {
+  const labelClass = {
     // autocasts as new LabelClass()
     symbol: {
       type: "text", // autocasts as new TextSymbol()
@@ -140,50 +125,45 @@ require([
       expression: "$feature.MapTitle"
     }
   };
-  var featureLayer = new FeatureLayer({
-    title: "Trails Illustrated",
-    url:
-      "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",
+  const featureLayer = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",{
+    name: "Trails Illustrated",
     outFields: ["FID", "MapNumb", "MapTitle", "ProdCode"],
     labelingInfo: [labelClass],
-    popupTemplate: template,
+    infoTemplate: template,
     renderer: trailsMapsStyle
   });
 
-  var adventureMaps = new FeatureLayer({
-    title: "Adventure Maps",
-    visible: false,
-    url:
-      "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/AD_BdryPoly/FeatureServer/0/",
+  const adventureMaps = new FeatureLayer( "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/AD_BdryPoly/FeatureServer/0/",{
+    name: "Adventure Maps",
+    visible: false,     
     outFields: ["*"],
-    popupTemplate: template,
+    infoTemplate: template,
     renderer: adventureMapsStyle
   });
 
-  var localMaps = new FeatureLayer({
-    title: "Local Maps",
+  const localMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/LCT_BdryPoly/FeatureServer/0/",{
+    name: "Local Maps",
     visible: false,
-    url:
-      "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/LCT_BdryPoly/FeatureServer/0/",
     outFields: ["*"],
-    popupTemplate: template,
+    infoTemplate: template,
     renderer: localMapsStyle
   });
-  var cityMaps = new FeatureLayer({
-    title: "City Maps",
+  const cityMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/DC_Point/FeatureServer/0/",{
+    name: "City Maps",
     visible: false,
-    url:
-      "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/DC_Point/FeatureServer/0/",
+    style: "circle",
+            size: 6,
+            color: [255, 0, 0],      
     outFields: ["*"],
-    popupTemplate: template
+    infoTemplate: template
   });
 
-  map.add(featureLayer);
-  map.add(adventureMaps);
-  map.add(localMaps);
-  map.add(cityMaps);
+  map.addLayer(featureLayer);
+  map.addLayer(adventureMaps);
+  map.addLayer(localMaps);
+  map.addLayer(cityMaps);
   // Create the MapView
-  var view = new MapView({
+ /* const view = new MapView({
     container: "viewDiv",
     map: map,
     zoom: 8,
@@ -204,9 +184,9 @@ require([
         closeButton: false
       }
     }
-  });
+  });*/
   var searchWidget = new Search({
-    view: view,
+    map: map,
     sources: [
       {
         layer: featureLayer,
@@ -219,60 +199,54 @@ require([
     ],
     includeDefaultSources: false
   });
-  view.when(function () {
-    /* var layerList = new LayerList({
-      view: view,
-      container: layerlistdiv
-    });*/
-    view.ui.add(searchWidget, {
-      position: "top-right",
-      index: 0
-    });
-    // Add widget to the top right corner of the view
-    //view.ui.add(layerList, "top-right");
-  });
-
-  view.ui.move("zoom", "top-right");
-  map.layers.forEach(function (arrayItem) {
+  searchWidget.startup();
+ 
+  map.graphicsLayerIds.forEach(function (arrayItem) {
+    console.log("A:"+arrayItem);
     var element = document.createElement("div");
-    if (arrayItem.visible) {
+    var layer = map.getLayer(arrayItem);
+    console.dir(layer);
+    
+    console.log(layer.url);
+    if (layer.visible) {
       element.style = "-webkit-filter: grayscale(0);";
     } else {
       element.style = "-webkit-filter: grayscale(1);";
     }
-    element.id = "layer-button-" + arrayItem.title;
+    element.id = "layer-button-" + layer.title;
     element.className = "layer-button";
-    var map_images = [
+    let map_images = [
       {
         name: "Trails Illustrated",
+        featureUrl:"https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",
         url:
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/trails-illustrated-maps.png"
       },
       {
         name: "City Maps",
+        featureUrl:"https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/DC_Point/FeatureServer/0/",
         url:
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/city-destination-maps.png"
       },
       {
         name: "Local Maps",
+        featureUrl:"https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/LCT_BdryPoly/FeatureServer/0/",
         url:
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/local-trails.png"
       },
       {
         name: "Adventure Maps",
+        featureUrl:"https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/AD_BdryPoly/FeatureServer/0/",
         url:
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/adventure-maps.png"
       }
     ];
-    var url = map_images.find(function(x){return x.name === arrayItem.title;}).url;
-    
-    //    var url = map_images.find((x) => x.name === arrayItem.title).url;
-
+    let url = map_images.find((x) => x.featureUrl === layer.url).url;
     element.innerHTML =
-      '<img src="' + url + '" height=50px><br>' + arrayItem.title;
+      '<img src="' + url + '" height=50px><br>' + "Name needed";
     element.addEventListener("click", function (evt) {
-      arrayItem.visible = !arrayItem.visible;
-      if (arrayItem.visible) {
+      layer.visible = !layer.visible;
+      if (layer.visible) {
         element.style = "-webkit-filter: grayscale(0);";
       } else {
         element.style = "-webkit-filter: grayscale(1);";
@@ -280,8 +254,8 @@ require([
     });
     document.getElementById("layerlistdiv").appendChild(element);
 
-    if (arrayItem.visible) {
-      console.log(arrayItem.title);
+    if (layer.visible) {
+      console.log(layer.displayField);
     }
   });
   var element = document.createElement("div");
@@ -291,7 +265,8 @@ require([
   element.addEventListener("click", function (evt) {
     openNav();
   });
-  view.ui.add(element, "top-left");
+  document.getElementsByTagName('body')[0].appendChild(element);
+
 });
 //});
 function open_popup(code) {
@@ -381,10 +356,21 @@ function initMap(product_code, num_images, first_image) {
     //Z.Viewer.autoResizeViewer();
   });
 }
+$(".esri-icon-download").click(function () {
+  
+  var win = window.open('https://ailgup.github.io/natgeomap/dezoomify.html#'+Z.Viewer.getImagePath()+'/ImageProperties.xml', '_blank');
+  if (win) {
+      //Browser has allowed it to be opened
+      win.focus();
+  } else {
+      //Browser has blocked it
+      alert('Please allow popups for this website');
+  }
+});
 $(".esri-icon-swap").click(function () {
   console.log("flip");
-  var url = Z.Viewer.getImagePath();
-  var cur = url.slice(-1);
+  let url = Z.Viewer.getImagePath();
+  let cur = url.slice(-1);
   console.log("url:" + url + " cur:" + cur);
   if (cur === "1") {
     getAjaxandSetImagePath(url.slice(0, -2), "2");

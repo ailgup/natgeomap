@@ -23,7 +23,7 @@ require([
    * To load a WebMap from an on-premise portal, set the portal
    * url with esriConfig.portalUrl.
    ************************************************************/
-  const map = new Map("viewDiv",{
+  var map = new Map("viewDiv",{
     basemap: "streets",
     //basemap: "topo-vector"
     zoom: 8,
@@ -45,7 +45,7 @@ require([
       }
     }
   });
-  const template = {
+  var template = {
     title: "",
     content: buildPopupContent
   };
@@ -108,7 +108,7 @@ require([
       }
     }
   };
-  const labelClass = {
+  var labelClass = {
     // autocasts as new LabelClass()
     symbol: {
       type: "text", // autocasts as new TextSymbol()
@@ -125,7 +125,7 @@ require([
       expression: "$feature.MapTitle"
     }
   };
-  const featureLayer = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",{
+  var featureLayer = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",{
     name: "Trails Illustrated",
     outFields: ["FID", "MapNumb", "MapTitle", "ProdCode"],
     labelingInfo: [labelClass],
@@ -133,7 +133,7 @@ require([
     renderer: trailsMapsStyle
   });
 
-  const adventureMaps = new FeatureLayer( "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/AD_BdryPoly/FeatureServer/0/",{
+  var adventureMaps = new FeatureLayer( "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/AD_BdryPoly/FeatureServer/0/",{
     name: "Adventure Maps",
     visible: false,     
     outFields: ["*"],
@@ -141,14 +141,14 @@ require([
     renderer: adventureMapsStyle
   });
 
-  const localMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/LCT_BdryPoly/FeatureServer/0/",{
+  var localMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/LCT_BdryPoly/FeatureServer/0/",{
     name: "Local Maps",
     visible: false,
     outFields: ["*"],
     infoTemplate: template,
     renderer: localMapsStyle
   });
-  const cityMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/DC_Point/FeatureServer/0/",{
+  var cityMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/DC_Point/FeatureServer/0/",{
     name: "City Maps",
     visible: false,
     style: "circle",
@@ -163,7 +163,7 @@ require([
   map.addLayer(localMaps);
   map.addLayer(cityMaps);
   // Create the MapView
- /* const view = new MapView({
+ /* var view = new MapView({
     container: "viewDiv",
     map: map,
     zoom: 8,
@@ -215,7 +215,7 @@ require([
     }
     element.id = "layer-button-" + layer.title;
     element.className = "layer-button";
-    let map_images = [
+    var map_images = [
       {
         name: "Trails Illustrated",
         featureUrl:"https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",
@@ -241,7 +241,7 @@ require([
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/adventure-maps.png"
       }
     ];
-    let url = map_images.find((x) => x.featureUrl === layer.url).url;
+    var url = map_images.find((x) => x.featureUrl === layer.url).url;
     element.innerHTML =
       '<img src="' + url + '" height=50px><br>' + "Name needed";
     element.addEventListener("click", function (evt) {
@@ -369,8 +369,8 @@ $(".esri-icon-download").click(function () {
 });
 $(".esri-icon-swap").click(function () {
   console.log("flip");
-  let url = Z.Viewer.getImagePath();
-  let cur = url.slice(-1);
+  var url = Z.Viewer.getImagePath();
+  var cur = url.slice(-1);
   console.log("url:" + url + " cur:" + cur);
   if (cur === "1") {
     getAjaxandSetImagePath(url.slice(0, -2), "2");

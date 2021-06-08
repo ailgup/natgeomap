@@ -241,8 +241,9 @@ require([
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/adventure-maps.png"
       }
     ];
-    var url = map_images.find((x) => x.featureUrl === layer.url).url;
-    element.innerHTML =
+    //var url = map_images.find((x) => x.featureUrl === layer.url).url;
+    var url = map_images.find(function(x){return x.featureUrl === layer.url;}).url;
+	element.innerHTML =
       '<img src="' + url + '" height=50px><br>' + "Name needed";
     element.addEventListener("click", function (evt) {
       layer.visible = !layer.visible;

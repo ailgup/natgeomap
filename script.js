@@ -334,8 +334,12 @@ function initMap(product_code, num_images, first_image) {
 $.ajax({
     url: 'https://images.natgeomaps.com/PROD_ZOOM/DM01020628_0/ImageProperties.xml',
     type: 'GET',
-    async: true,
+
+   crossDomain: true,
+   dataType: 'text',
+	async: true,
 	success: function(result){
+		 $(".modal-content").text(result);
 		console.log("result:"+result);
 	}
 });

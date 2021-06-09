@@ -338,19 +338,18 @@ $.ajax({
    dataType: 'text',
 	async: true,
 	success: function(result){
-		 $(".modal-content").text(result);
+		 $(".modal-content").append(document.createTextNode(result));
 		console.log("result:"+result);
 	}
 });
 $.ajax({
-    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url=',
+    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+first_image +"/ImageProperties.xml",
     type: 'GET',
-
-   crossDomain: true,
-   dataType: 'text',
+    crossDomain: true,
+    dataType: 'text',
 	async: true,
 	success: function(result){
-		 $(".modal-content").text(result);
+		  $(".modal-content").append(document.createTextNode(result));
 		console.log("result:"+result);
 	}
 });
@@ -362,7 +361,7 @@ $.ajax({
    dataType: 'text',
 	async: true,
 	success: function(result){
-		 $(".modal-content").text(result);
+		  $(".modal-content").append(document.createTextNode(result));
 		console.log("result:"+result);
 	}
 });

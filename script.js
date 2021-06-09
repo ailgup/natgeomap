@@ -299,6 +299,7 @@ function initMap(product_code, num_images, first_image) {
   }
 
   first_image = parseInt(first_image.substring(1));
+  /*
   var links = "";
   var i;
   for (i = first_image; i < first_image + num_images; i++) {
@@ -329,7 +330,7 @@ function initMap(product_code, num_images, first_image) {
     });
     e.preventDefault();
   });
-
+*/
 	var xhttp = new XMLHttpRequest();
 	console.log("a");
 	xhttp.onreadystatechange = function() {

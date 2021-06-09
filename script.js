@@ -332,7 +332,7 @@ function initMap(product_code, num_images, first_image) {
 */
 
 $.ajax({
-    url: 'style.css',
+    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url=',
     type: 'GET',
     async: true,
 	success: function(result){

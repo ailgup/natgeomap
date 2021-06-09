@@ -330,33 +330,32 @@ function initMap(product_code, num_images, first_image) {
     e.preventDefault();
   });
 
-  $.ajax({
-    url:
-      "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(result.replace(/"/g, "'"));
+
+			viewer = OpenSeadragon({
+			  id: "modal-map",
+			  prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
+			  tileSources: [
+				{
+				  type: "zoomifytileservice",
+				  width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
+				  height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
+				  tilesUrl: product_code + "_" + first_image + "/"
+				}
+			  ]
+			});
+		console.log("viewing");
+	  }
+	}
+	xhttp.open("GET", "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
       product_code +
       "_" +
       first_image +
-      "/ImageProperties.xml",
-    //type: 'GET',
-    //crossDomain: true,
-    dataType: "html"
-  }).done(function (result) {
-    console.log(result.replace(/"/g, "'"));
-
-    viewer = OpenSeadragon({
-      id: "modal-map",
-	  prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
-      tileSources: [
-        {
-          type: "zoomifytileservice",
-          width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
-          height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
-          tilesUrl: product_code + "_" + first_image + "/"
-        }
-      ]
-    });
-	console.log("viewing");
-  });
+      "/ImageProperties.xml", true);
+	xhttp.send();
 }
 $(".esri-icon-download").click(function () {
   

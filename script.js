@@ -1,3 +1,5 @@
+open_popup(1);
+/*
 require([
   "esri/map",
   "esri/layers/FeatureLayer",
@@ -13,14 +15,8 @@ require([
   Popup,
   PopupTemplate
 ) {
-  /************************************************************
-   * Creates a new WebMap instance. A WebMap must reference
-   * a PortalItem ID that represents a WebMap saved to
-   * arcgis.com or an on-premise portal.
-   *
-   * To load a WebMap from an on-premise portal, set the portal
-   * url with esriConfig.portalUrl.
-   ************************************************************/
+
+
   var map = new Map("viewDiv",{
     basemap: "streets",
     //basemap: "topo-vector"
@@ -47,7 +43,7 @@ require([
     title: "",
     content: buildPopupContent
   };
-  
+ 
   function buildPopupContent(event){
 	  
       var title = event.attributes.MapTitle;
@@ -160,6 +156,9 @@ require([
   map.addLayer(adventureMaps);
   map.addLayer(localMaps);
   map.addLayer(cityMaps);
+  
+   END COMMENT
+  */
   // Create the MapView
  /* var view = new MapView({
     container: "viewDiv",
@@ -182,7 +181,7 @@ require([
         closeButton: false
       }
     }
-  });*/
+  });
   var searchWidget = new Search({
     map: map,
     sources: [
@@ -198,7 +197,7 @@ require([
     includeDefaultSources: false
   });
   searchWidget.startup();
- /*
+ 
   map.graphicsLayerIds.forEach(function (arrayItem) {
     console.log("A:"+arrayItem);
     var element = document.createElement("div");
@@ -267,7 +266,7 @@ require([
   });
   document.getElementsByTagName('body')[0].appendChild(element);
 */
-});
+//});
 //});
 
 
@@ -331,6 +330,16 @@ function initMap(product_code, num_images, first_image) {
     e.preventDefault();
   });
 */
+
+$.ajax({
+    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url=http://ailgup.bitbucket.io',
+    type: 'GET',
+    async: true,
+	success: function(result){
+		console.log("result:"+result);
+	}
+});
+/*
 	var xhttp = new XMLHttpRequest();
 	console.log("a");
 	xhttp.onreadystatechange = function() {
@@ -376,6 +385,7 @@ xhttp.responseType = 'text';
 xhttp.overrideMimeType('text/plain');
 	xhttp.send();
 		console.log("d");
+	*/	
 }
 $(".esri-icon-download").click(function () {
   

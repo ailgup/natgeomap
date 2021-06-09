@@ -330,18 +330,7 @@ function initMap(product_code, num_images, first_image) {
     e.preventDefault();
   });
 */
-$.ajax({
-    url: 'style.css',
-    type: 'GET',
 
-   crossDomain: true,
-   dataType: 'text',
-	async: true,
-	success: function(result){
-		 $(".modal-content").append(document.createTextNode(result));
-		console.log("result:"+result);
-	}
-});
 $.ajax({
     url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+first_image +"/ImageProperties.xml",
     type: 'GET',
@@ -349,22 +338,22 @@ $.ajax({
     dataType: 'text',
 	async: true,
 	success: function(result){
-		  $(".modal-content").append(document.createTextNode(result));
-		console.log("result:"+result);
+		$(".modal-content").append(document.createTextNode(result));
+		viewer = OpenSeadragon({
+			  id: "modal-map",
+			  prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
+			  tileSources: [
+				{
+				  type: "zoomifytileservice",
+				  width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
+				  height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
+				  tilesUrl: product_code + "_" + first_image + "/"
+				}
+			  ]
+			});
 	}
 });
-$.ajax({
-    url: 'https://images.natgeomaps.com/PROD_ZOOM/DM01020628_1/ImageProperties.xml',
-    type: 'GET',
 
-   crossDomain: true,
-   dataType: 'text',
-	async: true,
-	success: function(result){
-		  $(".modal-content").append(document.createTextNode(result));
-		console.log("result:"+result);
-	}
-});
 
 
 /*
@@ -381,18 +370,7 @@ $.ajax({
 			console.log("RES"+xhttp.responseText);
 			console.log(result.replace(/"/g, "'"));
 
-			viewer = OpenSeadragon({
-			  id: "modal-map",
-			  prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
-			  tileSources: [
-				{
-				  type: "zoomifytileservice",
-				  width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
-				  height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
-				  tilesUrl: product_code + "_" + first_image + "/"
-				}
-			  ]
-			});
+			
 		console.log("viewing");
 	  }
 	  else{

@@ -1,5 +1,4 @@
-open_popup("DM01020628");
-/*
+if (navigator.onLine){
 require([
   "esri/map",
   "esri/layers/FeatureLayer",
@@ -156,32 +155,8 @@ require([
   map.addLayer(adventureMaps);
   map.addLayer(localMaps);
   map.addLayer(cityMaps);
-  
-   END COMMENT
-  */
-  // Create the MapView
- /* var view = new MapView({
-    container: "viewDiv",
-    map: map,
-    zoom: 8,
-    center: [-71.085421, 42.34745],
-    popup: {
-      actions: [],
-      alignment: "auto",
-      dockOptions: {
-        buttonEnabled: false,
-        // Disable the dock button so users cannot undock the popup
-        // Dock the popup when the size of the view is less than or equal to 600x1000 pixels
-        breakpoint: {
-          width: 0,
-          height: 0
-        }
-      },
-      visibleElements: {
-        closeButton: false
-      }
-    }
-  });
+
+
   var searchWidget = new Search({
     map: map,
     sources: [
@@ -265,8 +240,18 @@ require([
     openNav();
   });
   document.getElementsByTagName('body')[0].appendChild(element);
-*/
-//});
+
+});
+} //end of online
+else{
+	//offline
+	$("#viewDiv").html("<h3>OFFLINE</h3><br><button id='button'>Open</button><input id='file-input' type='file' name='name' style='display: none;' />");
+	$('#button').on('click', function() {
+		$('#file-input').trigger('click');
+	});
+	
+	
+}
 //});
 
 
@@ -332,66 +317,48 @@ function initMap(product_code, num_images, first_image) {
 */
 
 $.ajax({
-    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+first_image +"/ImageProperties.xml",
+    url: 'http://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+first_image +"/ImageProperties.xml",
     type: 'GET',
     crossDomain: true,
     dataType: 'text',
 	async: true,
 	success: function(result){
-		$(".modal-content").append(document.createTextNode(result));
-		viewer = OpenSeadragon({
-			  id: "modal-map",
-			  prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
-			  tileSources: [
-				{
-				  type: "zoomifytileservice",
-				  width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
-				  height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
-				  tilesUrl: product_code + "_" + first_image + "/"
-				}
-			  ]
+		$.ajax({
+			url: 'http://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+(first_image+1) +"/ImageProperties.xml",
+			type: 'GET',
+			crossDomain: true,
+			dataType: 'text',
+			async: true,
+			success: function(result2){
+				
+				viewer = OpenSeadragon({
+					  id: "modal-map",
+					  //prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
+					  sequenceMode: true,
+					  tileSources: [
+						{
+						  type: "zoomifytileservice",
+						  width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
+						  height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
+						  tilesUrl: product_code + "_" + first_image + "/"
+						},
+					  
+						{
+						  type: "zoomifytileservice",
+						  width: parseInt(result2.split('WIDTH="')[1].split('"')[0]),
+						  height: parseInt(result2.split('HEIGHT="')[1].split('"')[0]),
+						  tilesUrl: product_code + "_" + (first_image+1)+ "/"
+						}
+					  ]
+					});
+			}
 			});
+			
 	}
 });
 
 
 
-/*
-	var xhttp = new XMLHttpRequest();
-	console.log("a");
-	xhttp.onreadystatechange = function() {
-	console.log("e: R["+this.readyState+"]");
-	if (this.readyState==4){
-		console.log(" S:["+this.status+"]");
-	}
-		if (this.readyState == 4 && this.status == 200) {
-				console.log("f");
-			var result = xhttp.responseText;
-			console.log("RES"+xhttp.responseText);
-			console.log(result.replace(/"/g, "'"));
-
-			
-		console.log("viewing");
-	  }
-	  else{
-		  console.log("X"+xhttp.responseText);
-	  }
-	};
-		console.log("b");
-	xhttp.open("GET", "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
-      product_code +
-      "_" +
-      first_image +
-      "/ImageProperties.xml", true);
-	console.log("c");
-	// If specified, responseType must be empty string or "document"
-xhttp.responseType = 'text';
-
-// Force the response to be parsed as XML
-xhttp.overrideMimeType('text/plain');
-	xhttp.send();
-		console.log("d");
-	*/	
 }
 $(".esri-icon-download").click(function () {
   
@@ -404,42 +371,7 @@ $(".esri-icon-download").click(function () {
       alert('Please allow popups for this website');
   }
 });
-$(".esri-icon-swap").click(function () {
-  console.log("flip");
-  var url = Z.Viewer.getImagePath();
-  var cur = url.slice(-1);
-  console.log("url:" + url + " cur:" + cur);
-  if (cur === "1") {
-    getAjaxandSetImagePath(url.slice(0, -2), "2");
-  }
-  if (cur === "2") {
-    getAjaxandSetImagePath(url.slice(0, -2), "1");
-  }
-});
-function getAjaxandSetImagePath(url, first_image) {
-  $.ajax({
-    url:
-      "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
-      url +
-      "_" +
-      first_image +
-      "/ImageProperties.xml",
-    //type: 'GET',
-    //crossDomain: true,
-    dataType: "html"
-  }).done(function (result) {
-    var options =
-      "zToolbarInternal=1&" +
-      "zMousePan=1&" +
-      "zMouseWheel=1&" +
-      //"zDoubleClickZoom=1&" +
-      "zNavigatorVisible=0&" +
-      "zImageProperties=" +
-      result.replace(/"/g, "'");
-    console.log("path:" + url + "_" + first_image);
-    Z.showImage("modal-map", url + "_" + first_image, options);
-  });
-}
+
 $("#expand-one").click(function () {
   $("#chooser").slideDown();
 });

@@ -266,10 +266,11 @@ require([
     openNav();
   });
   document.getElementsByTagName('body')[0].appendChild(element);
-
+*/
 });
 //});
-*/
+
+
 function open_popup(code) {
   var modal = document.getElementById("Modal");
   modal.style.visibility = "visible";

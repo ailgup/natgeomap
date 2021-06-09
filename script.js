@@ -317,14 +317,14 @@ function initMap(product_code, num_images, first_image) {
 */
 
 $.ajax({
-    url: 'http://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+first_image +"/ImageProperties.xml",
+    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+first_image +"/ImageProperties.xml",
     type: 'GET',
     crossDomain: true,
     dataType: 'text',
 	async: true,
 	success: function(result){
 		$.ajax({
-			url: 'http://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+(first_image+1) +"/ImageProperties.xml",
+			url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url='+product_code +"_"+(first_image+1) +"/ImageProperties.xml",
 			type: 'GET',
 			crossDomain: true,
 			dataType: 'text',

@@ -333,7 +333,7 @@ function initMap(product_code, num_images, first_image) {
 */
 	var xhttp = new XMLHttpRequest();
 	console.log("a");
-	xhttp.onreadystatechange = function() {
+	xhttp.onload = function() {
 	console.log("e: R["+this.readyState+"]");
 	if (this.readyState==4){
 		console.log(" S:["+this.status+"]");
@@ -341,6 +341,7 @@ function initMap(product_code, num_images, first_image) {
 		if (this.readyState == 4 && this.status == 200) {
 				console.log("f");
 			var result = xhttp.responseText;
+			console.log("RES"+xhttp.responseText);
 			console.log(result.replace(/"/g, "'"));
 
 			viewer = OpenSeadragon({
@@ -362,12 +363,17 @@ function initMap(product_code, num_images, first_image) {
 	  }
 	};
 		console.log("b");
-	xhttp.open("GET", /*"https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
+	xhttp.open("GET", "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
       product_code +
       "_" +
       first_image +
-      "/ImageProperties.xml"*/"https://ailgup.bitbucket.io", true);
+      "/ImageProperties.xml", true);
 	console.log("c");
+	// If specified, responseType must be empty string or "document"
+xhttp.responseType = 'text';
+
+// Force the response to be parsed as XML
+xhttp.overrideMimeType('text/plain');
 	xhttp.send();
 		console.log("d");
 }

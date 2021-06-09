@@ -331,6 +331,7 @@ function initMap(product_code, num_images, first_image) {
   });
 
 	var xhttp = new XMLHttpRequest();
+	console.log("a");
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var result = xhttp.responseText;
@@ -351,12 +352,15 @@ function initMap(product_code, num_images, first_image) {
 		console.log("viewing");
 	  }
 	}
+		console.log("b");
 	xhttp.open("GET", "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
       product_code +
       "_" +
       first_image +
       "/ImageProperties.xml", true);
+	console.log("c");
 	xhttp.send();
+		console.log("d");
 }
 $(".esri-icon-download").click(function () {
   

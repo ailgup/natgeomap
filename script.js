@@ -354,6 +354,9 @@ function initMap(product_code, num_images, first_image) {
 			});
 		console.log("viewing");
 	  }
+	  else{
+		  console.log(xhttp.responseText);
+	  }
 	};
 		console.log("b");
 	xhttp.open("GET", "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +

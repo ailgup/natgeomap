@@ -1,11 +1,9 @@
-$(document).ready(function () {});
-var map;
 require([
   "esri/map",
   "esri/layers/FeatureLayer",
   "esri/dijit/LayerList",
   "esri/dijit/Search",
-  "esri/dijit/Popup", 
+  "esri/dijit/Popup",
   "esri/dijit/PopupTemplate"
 ], function (
   Map,
@@ -70,7 +68,7 @@ require([
         return div;
       
     
-  };
+  }
 
   var trailsMapsStyle = {
     type: "simple", // autocasts as new SimpleRenderer()
@@ -299,8 +297,8 @@ function initMap(product_code, num_images, first_image) {
 
   first_image = parseInt(first_image.substring(1));
   var links = "";
-
-  for (var i = first_image; i < first_image + num_images; i++) {
+  var i;
+  for (i = first_image; i < first_image + num_images; i++) {
     var image_path = product_code + "_" + i;
     links +=
       '<a href="#" data-image-path="' +

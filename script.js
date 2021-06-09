@@ -198,10 +198,11 @@ require([
     includeDefaultSources: false
   });
   searchWidget.startup();
- 
+ /*
   map.graphicsLayerIds.forEach(function (arrayItem) {
     console.log("A:"+arrayItem);
     var element = document.createElement("div");
+	console.log("b");
     var layer = map.getLayer(arrayItem);
 	
     
@@ -268,6 +269,7 @@ require([
 
 });
 //});
+*/
 function open_popup(code) {
   var modal = document.getElementById("Modal");
   modal.style.visibility = "visible";

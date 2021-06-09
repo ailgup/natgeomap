@@ -262,6 +262,7 @@ function open_popup(code) {
 }
 
 $(".Close").click(function () {
+	viewer.destroy();
   var modal = document.getElementById("Modal");
   modal.style.visibility = "hidden";
 });

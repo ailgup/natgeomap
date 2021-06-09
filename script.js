@@ -334,7 +334,7 @@ function initMap(product_code, num_images, first_image) {
 	var xhttp = new XMLHttpRequest();
 	console.log("a");
 	xhttp.onreadystatechange = function() {
-			console.log("e");
+			console.log("e: R["+this.readyState+"] S:["+this.status+"]");
 		if (this.readyState == 4 && this.status == 200) {
 				console.log("f");
 			var result = xhttp.responseText;

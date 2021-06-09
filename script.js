@@ -330,9 +330,8 @@ function initMap(product_code, num_images, first_image) {
     e.preventDefault();
   });
 */
-
 $.ajax({
-    url: 'https://images.natgeomaps.com/PROD_ZOOM/DM01020628_0/ImageProperties.xml',
+    url: 'style.css',
     type: 'GET',
 
    crossDomain: true,
@@ -356,7 +355,7 @@ $.ajax({
 	}
 });
 $.ajax({
-    url: 'style.css',
+    url: 'https://images.natgeomaps.com/PROD_ZOOM/DM01020628_0/ImageProperties.xml',
     type: 'GET',
 
    crossDomain: true,
@@ -367,6 +366,8 @@ $.ajax({
 		console.log("result:"+result);
 	}
 });
+
+
 /*
 	var xhttp = new XMLHttpRequest();
 	console.log("a");

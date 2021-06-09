@@ -101,8 +101,9 @@ body,
 width:auto;
 }
 .esriPopup .sizer .content {
-  width: intrinsic; /* safari */
-  width: fit-content !important;
+  /*width: intrinsic; 
+  width: -webkit-fit-content;
+  width: fit-content;*/
 }
 .esriPopup .contentPane {
   padding: 0px;

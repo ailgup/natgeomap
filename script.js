@@ -343,6 +343,30 @@ $.ajax({
 		console.log("result:"+result);
 	}
 });
+$.ajax({
+    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url=',
+    type: 'GET',
+
+   crossDomain: true,
+   dataType: 'text',
+	async: true,
+	success: function(result){
+		 $(".modal-content").text(result);
+		console.log("result:"+result);
+	}
+});
+$.ajax({
+    url: 'style.css',
+    type: 'GET',
+
+   crossDomain: true,
+   dataType: 'text',
+	async: true,
+	success: function(result){
+		 $(".modal-content").text(result);
+		console.log("result:"+result);
+	}
+});
 /*
 	var xhttp = new XMLHttpRequest();
 	console.log("a");

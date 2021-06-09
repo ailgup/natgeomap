@@ -358,15 +358,15 @@ function initMap(product_code, num_images, first_image) {
 		console.log("viewing");
 	  }
 	  else{
-		  console.log(xhttp.responseText);
+		  console.log("X"+xhttp.responseText);
 	  }
 	};
 		console.log("b");
-	xhttp.open("GET", "https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
+	xhttp.open("GET", /*"https://ophir.alwaysdata.net/dezoomify/proxy.php?url=" +
       product_code +
       "_" +
       first_image +
-      "/ImageProperties.xml", true);
+      "/ImageProperties.xml"*/"https://reqbin.com/echo", true);
 	console.log("c");
 	xhttp.send();
 		console.log("d");

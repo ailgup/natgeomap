@@ -62,9 +62,9 @@ require([
           code +
           '\')" class="popup-link">' +
           //'<h3>'+title +'</h3>'+
-          '<img class="esriPopupMediaImage" height="100%" src="http://images.natgeomaps.com/PROD_SM_250px/' +
+          '<img class="esriPopupMediaImage" src="http://images.natgeomaps.com/PROD_SM_250px/' +
           code +
-          '_0_SM.jpg" style=""></div>';
+          '_0_SM.jpg" style="height: 250px;width: 110px;"></div>';
         return div;
       
     

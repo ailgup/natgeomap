@@ -342,19 +342,17 @@ function initMap(product_code, num_images, first_image) {
   }).done(function (result) {
     console.log(result.replace(/"/g, "'"));
 
-    Z.showImage(
-      "modal-map",
-      product_code + "_" + first_image,
-      "zToolbarInternal=1&" +
-        "zMousePan=1&" +
-        "zMouseWheel=1&" +
-        //"zDoubleClickZoom=1&" +
-        "zNavigatorVisible=0&" +
-        "zImageProperties=" +
-        result.replace(/"/g, "'")
-    );
-
-    //Z.Viewer.autoResizeViewer();
+    viewer = OpenSeadragon({
+      id: "modal-map",
+      tileSources: [
+        {
+          type: "zoomifytileservice",
+          width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
+          height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
+          tilesUrl: product_code + "_" + first_image + "/"
+        }
+      ]
+    });
   });
 }
 $(".esri-icon-download").click(function () {

@@ -333,6 +333,7 @@ function initMap(product_code, num_images, first_image) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
+			var result = xhttp.responseText;
 			console.log(result.replace(/"/g, "'"));
 
 			viewer = OpenSeadragon({

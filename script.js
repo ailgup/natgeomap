@@ -363,7 +363,7 @@ function initMap(product_code, num_images, first_image) {
       product_code +
       "_" +
       first_image +
-      "/ImageProperties.xml", false);
+      "/ImageProperties.xml", true);
 	console.log("c");
 	xhttp.send();
 		console.log("d");

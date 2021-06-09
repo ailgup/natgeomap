@@ -355,6 +355,7 @@ function initMap(product_code, num_images, first_image) {
         }
       ]
     });
+	console.log("viewing");
   });
 }
 $(".esri-icon-download").click(function () {

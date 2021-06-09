@@ -49,7 +49,7 @@ require([
   };
   
   function buildPopupContent(event){
-    console.dir(event);
+	  
       var title = event.attributes.MapTitle;
       var code = event.attributes.ProdCode;
       var fid = event.attributes.FID;
@@ -203,7 +203,7 @@ require([
     console.log("A:"+arrayItem);
     var element = document.createElement("div");
     var layer = map.getLayer(arrayItem);
-    console.dir(layer);
+	
     
     console.log(layer.url);
     if (layer.visible) {

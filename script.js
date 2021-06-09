@@ -332,7 +332,7 @@ function initMap(product_code, num_images, first_image) {
 */
 
 $.ajax({
-    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url=',
+    url: 'https://images.natgeomaps.com/PROD_ZOOM/DM01020628_0/ImageProperties.xml',
     type: 'GET',
     async: true,
 	success: function(result){

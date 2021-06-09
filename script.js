@@ -332,7 +332,7 @@ function initMap(product_code, num_images, first_image) {
 */
 
 $.ajax({
-    url: 'https://ophir.alwaysdata.net/dezoomify/proxy.php?url=http://ailgup.bitbucket.io',
+    url: 'style.css',
     type: 'GET',
     async: true,
 	success: function(result){

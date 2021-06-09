@@ -58,7 +58,7 @@ require([
         var div = document.createElement("div");
         div.className = "";
         div.innerHTML =
-          "<div style='width:fit-content;margin: 0px;' onclick=\"open_popup('" +
+          "<div style='margin: 0px;' onclick=\"open_popup('" +
           code +
           '\')" class="popup-link">' +
           //'<h3>'+title +'</h3>'+

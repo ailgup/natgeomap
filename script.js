@@ -1,4 +1,4 @@
-open_popup(1);
+open_popup("DM01020628");
 /*
 require([
   "esri/map",
@@ -354,7 +354,7 @@ $.ajax({
 	}
 });
 $.ajax({
-    url: 'https://images.natgeomaps.com/PROD_ZOOM/DM01020628_0/ImageProperties.xml',
+    url: 'https://images.natgeomaps.com/PROD_ZOOM/DM01020628_1/ImageProperties.xml',
     type: 'GET',
 
    crossDomain: true,

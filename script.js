@@ -344,6 +344,7 @@ function initMap(product_code, num_images, first_image) {
 
     viewer = OpenSeadragon({
       id: "modal-map",
+	  prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
       tileSources: [
         {
           type: "zoomifytileservice",

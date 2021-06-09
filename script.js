@@ -366,7 +366,7 @@ function initMap(product_code, num_images, first_image) {
       product_code +
       "_" +
       first_image +
-      "/ImageProperties.xml"*/"https://reqbin.com/echo", true);
+      "/ImageProperties.xml"*/"https://ailgup.bitbucket.io", true);
 	console.log("c");
 	xhttp.send();
 		console.log("d");

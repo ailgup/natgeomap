@@ -237,12 +237,19 @@ cityMaps.setRenderer(cityMapsStyle);
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/adventure-maps.png"
       }
     ];
-    
-	var url = map_images.find(function(x){return x.featureUrl === layer.url;}).url;
+    console.log("z");
+	var i;
+	var url="none";
+	for (i=0;i<map_images.length;i++){
+		if (map_images[i].featureUrl === layer.url){
+			url = map_images[i].url;
+			break;
+		}
+	}
 	element.innerHTML =
       '<img src="' + url + '" height=50px><br>';
     element.addEventListener("click", function (evt) {
-
+console.log("q");
       if (layer.visible) {
 		  layer.hide();
         element.style = "-webkit-filter: grayscale(1);";

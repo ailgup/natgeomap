@@ -232,8 +232,8 @@ tiMaps.setRenderer(trailsMapsStyle);
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/adventure-maps.png"
       }
     ];
-    //var url = map_images.find((x) => x.featureUrl === layer.url).url;
-    var url = map_images.find(function(x){return x.featureUrl === layer.url;}).url;
+    /*
+	var url = map_images.find(function(x){return x.featureUrl === layer.url;}).url;
 	element.innerHTML =
       '<img src="' + url + '" height=50px><br>' + "Name needed";
     element.addEventListener("click", function (evt) {
@@ -249,6 +249,7 @@ tiMaps.setRenderer(trailsMapsStyle);
     if (layer.visible) {
       console.log(layer.displayField);
     }
+	*/
   });
   var element = document.createElement("div");
   element.id = "sidenav-button";

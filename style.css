@@ -138,33 +138,18 @@ display:none;
     bottom: 10px;
     right: 10px;
 }
-.Modal .esri-icon-download {
-    bottom: 10px;
-    right: 100px;
-}
-.Modal .esri-icon-download .download-text {
- font-size:10px; 
-}
+
 .map-button:hover,
 .map-button:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
 }
-.download-text{
-      position: absolute;
-    bottom: 14px;
-    right: 115px;
-    color: white;
-    z-index: 11;
-    font-size: 8pt;
-}
+
 
 .map-button {
     color: white;
     position: fixed;
-    bottom: 10px;
-    right: 100px;
     /* text-align: start; */
     font-size: 30px;
     font-weight: bold;
@@ -174,7 +159,7 @@ display:none;
     width: 50px;
     height: 50px;
     text-align: center;
-    line-height: 40px;
+    line-height: 50px;
     z-index: 10;
 }
 .Modal .Close {
@@ -218,4 +203,13 @@ margin-top: 10px;
     font-size: 1em;
     line-height: 1.25em;
     z-index: 1;
+  }
+  #bottom-nav-wrapper{
+	  margin-left:auto;
+	  margin-right:auto;
+	  width: 50%;
+  }
+#bottom-nav-bar{
+  position: absolute;
+    bottom: 10px;
   }

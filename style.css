@@ -205,7 +205,7 @@ margin-top: 10px;
     font-size: 32px;
   color: black;
 }
-.esri-attribution{
+.esri-attribution, .esriControlsBR{
   visibility: hidden;
 }
 .arcgisSearch {

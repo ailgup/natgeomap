@@ -11,7 +11,8 @@ require([
   "esri/symbols/SimpleLineSymbol",
   "esri/Color",
   "esri/symbols/TextSymbol",
-  "esri/layers/LabelClass"
+  "esri/layers/LabelClass",
+  "esri/symbols/SimpleMarkerSymbol"
 ], function (
   Map,
   FeatureLayer,
@@ -24,7 +25,8 @@ require([
   SimpleLineSymbol,
   Color,
   TextSymbol,
-  LabelClass
+  LabelClass,
+  SimpleMarkerSymbol
 ) {
 
 
@@ -78,16 +80,11 @@ require([
     
   }
 
-  var trailsMapsStyle = new SimpleRenderer(
-	  new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
-	  new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([79, 129, 83, 1]), 2),
-	  new Color([79, 129, 83, 0.25])
-	  ));
+
 	  
 	  
   // create a text symbol to define the style of labels
 	var statesLabel = new TextSymbol().setColor(new Color("#666"));
-	
 	statesLabel.font.setFamily("times");
 
 
@@ -95,32 +92,27 @@ require([
 	var labelClass = new LabelClass({"labelExpressionInfo": {"value": "{MapTitle}"}});
 	labelClass.symbol = statesLabel; // symbol also can be set in LabelClass' json
 
-		
-		
-  var adventureMapsStyle = {
-    type: "simple", // autocasts as new SimpleRenderer()
-    symbol: {
-      type: "simple-fill", // autocasts as new SimpleFillSymbol()
-      color: [153, 85, 144, 0.203922],
-      outline: {
-        // makes the outlines of all features consistently light gray
-        color: [56, 168, 0, 0.5],
-        width: 2
-      }
-    }
-  };
-  var localMapsStyle = {
-    type: "simple", // autocasts as new SimpleRenderer()
-    symbol: {
-      type: "simple-fill", // autocasts as new SimpleFillSymbol()
-      color: [113, 63, 35, 0.25],
-      outline: {
-        // makes the outlines of all features consistently light gray
-        color: [113, 63, 35, 0.5],
-        width: 2
-      }
-    }
-  };
+  var trailsMapsStyle = new SimpleRenderer(
+	  new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+	  new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([79, 129, 83, 1]), 2),
+	  new Color([79, 129, 83, 0.25])
+	  ));	
+  var adventureMapsStyle = new SimpleRenderer(
+	  new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+	  new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([153, 85, 144, 1]), 2),
+	  new Color([153, 85, 144, 0.203922])
+	  ));  
+  var localMapsStyle = new SimpleRenderer(
+	  new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+	  new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([113, 63, 35, 1]), 2),
+	  new Color([113, 63, 35, 0.25])
+	  ));		
+  var cityMapsStyle = new SimpleRenderer(
+	  new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 20,
+    new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+    new Color([143,25,30]), 1),
+    new Color([143,25,30,0.5]
+	)));
   var labelClass = {
     // autocasts as new LabelClass()
     symbol: {
@@ -149,6 +141,7 @@ require([
     name: "Adventure Maps",
     visible: false,     
     outFields: ["*"],
+	labelingInfo: [labelClass],
     infoTemplate: template
   });
 
@@ -156,18 +149,30 @@ require([
     name: "Local Maps",
     visible: false,
     outFields: ["*"],
+	labelingInfo: [labelClass],
     infoTemplate: template
   });
   var cityMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/DC_Point/FeatureServer/0/",{
     name: "City Maps",
     visible: false,
+	labelingInfo: [labelClass],
     style: "circle",
             size: 6,
             color: [255, 0, 0],      
-    outFields: ["*"]
+    outFields: ["*"],
+    infoTemplate: template
   });
+  
 tiMaps.setRenderer(trailsMapsStyle);
+adventureMaps.setRenderer(adventureMapsStyle);
+localMaps.setRenderer(localMapsStyle);
+cityMaps.setRenderer(cityMapsStyle);
+
 	tiMaps.setLabelingInfo([ labelClass ]);
+	adventureMaps.setLabelingInfo([ labelClass ]);
+	localMaps.setLabelingInfo([ labelClass ]);
+	
+	
   map.addLayer(tiMaps);
   map.addLayer(adventureMaps);
   map.addLayer(localMaps);
@@ -198,7 +203,7 @@ tiMaps.setRenderer(trailsMapsStyle);
     var layer = map.getLayer(arrayItem);
 	
     
-    console.log(layer.url);
+    console.log("V:"+layer.visible);
     if (layer.visible) {
       element.style = "-webkit-filter: grayscale(0);";
     } else {
@@ -232,16 +237,18 @@ tiMaps.setRenderer(trailsMapsStyle);
           "https://www.natgeomaps.com/pub/media/wysiwyg/infortis/brands/adventure-maps.png"
       }
     ];
-    /*
+    
 	var url = map_images.find(function(x){return x.featureUrl === layer.url;}).url;
 	element.innerHTML =
-      '<img src="' + url + '" height=50px><br>' + "Name needed";
+      '<img src="' + url + '" height=50px><br>';
     element.addEventListener("click", function (evt) {
-      layer.visible = !layer.visible;
+
       if (layer.visible) {
-        element.style = "-webkit-filter: grayscale(0);";
-      } else {
+		  layer.hide();
         element.style = "-webkit-filter: grayscale(1);";
+      } else {
+		  layer.show();
+        element.style = "-webkit-filter: grayscale(0);";
       }
     });
     document.getElementById("layerlistdiv").appendChild(element);
@@ -249,7 +256,7 @@ tiMaps.setRenderer(trailsMapsStyle);
     if (layer.visible) {
       console.log(layer.displayField);
     }
-	*/
+	
   });
   var element = document.createElement("div");
   element.id = "sidenav-button";
@@ -266,7 +273,7 @@ else{
 	//offline
 	$("#viewDiv").html("<h3>OFFLINE</h3><br><button id='button'>Open</button><input id='file-input' type='file' name='name' style='display: none;' />");
 	$('#button').on('click', function() {
-		$('#file-input').trigger('click');
+		//$('#file-input').trigger('click');
 	});
 	
 	

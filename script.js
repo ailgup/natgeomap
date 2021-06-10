@@ -334,7 +334,7 @@ $.ajax({
 				
 				viewer = OpenSeadragon({
 					  id: "modal-map",
-					  //prefixUrl: "https://cdn.jsdelivr.net/npm/openseadragon@2.4/build/openseadragon/images/",
+					  prefixUrl: "https://ailgup.github.io/natgeomap/images/",
 					  sequenceMode: true,
 					  tileSources: [
 						{

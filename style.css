@@ -18,8 +18,10 @@ body,
     height:100%;
 }
 .esriSimpleSliderTL{
-  right: 20px;
-    left: auto;
+	right: 20px;
+	left: auto;
+	top: 70px;
+	z-index:1;
 }
 #sidenav-button{
     position: fixed;
@@ -206,3 +208,14 @@ margin-top: 10px;
 .esri-attribution{
   visibility: hidden;
 }
+.arcgisSearch {
+    display: block;
+    top: 1.25em;
+    right: 0.625em;
+    position: absolute;
+    height: 3.75em;
+    width: auto;
+    font-size: 1em;
+    line-height: 1.25em;
+    z-index: 1;
+  }

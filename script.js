@@ -5,22 +5,35 @@ require([
   "esri/dijit/LayerList",
   "esri/dijit/Search",
   "esri/dijit/Popup",
-  "esri/dijit/PopupTemplate"
+  "esri/dijit/PopupTemplate",
+  "esri/renderers/SimpleRenderer",
+  "esri/symbols/SimpleFillSymbol",
+  "esri/symbols/SimpleLineSymbol",
+  "esri/Color",
+  "esri/symbols/TextSymbol",
+  "esri/layers/LabelClass"
 ], function (
   Map,
   FeatureLayer,
   LayerList,
   Search,
   Popup,
-  PopupTemplate
+  PopupTemplate,
+  SimpleRenderer,
+  SimpleFillSymbol,
+  SimpleLineSymbol,
+  Color,
+  TextSymbol,
+  LabelClass
 ) {
 
 
   var map = new Map("viewDiv",{
     basemap: "streets",
     //basemap: "topo-vector"
-    zoom: 8,
-    center: [-71.085421, 42.34745],
+    center: [-71.085421, 42.34745],    
+	zoom: 8,
+	showLabels : true,
     popup: {
       actions: [],
       alignment: "auto",
@@ -65,18 +78,25 @@ require([
     
   }
 
-  var trailsMapsStyle = {
-    type: "simple", // autocasts as new SimpleRenderer()
-    symbol: {
-      type: "simple-fill", // autocasts as new SimpleFillSymbol()
-      color: [79, 129, 83, 0.25],
-      outline: {
-        // makes the outlines of all features consistently light gray
-        color: [79, 129, 83, 0.5],
-        width: 2
-      }
-    }
-  };
+  var trailsMapsStyle = new SimpleRenderer(
+	  new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+	  new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,new Color([79, 129, 83, 1]), 2),
+	  new Color([79, 129, 83, 0.25])
+	  ));
+	  
+	  
+  // create a text symbol to define the style of labels
+	var statesLabel = new TextSymbol().setColor(new Color("#666"));
+	
+	statesLabel.font.setFamily("times");
+
+
+	//create instance of LabelClass (note: multiple LabelClasses can be passed in as an array)
+	var labelClass = new LabelClass({"labelExpressionInfo": {"value": "{MapTitle}"}});
+	labelClass.symbol = statesLabel; // symbol also can be set in LabelClass' json
+
+		
+		
   var adventureMapsStyle = {
     type: "simple", // autocasts as new SimpleRenderer()
     symbol: {
@@ -118,28 +138,25 @@ require([
       expression: "$feature.MapTitle"
     }
   };
-  var featureLayer = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",{
+  var tiMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/TI_BdryPoly/FeatureServer/0/",{
     name: "Trails Illustrated",
     outFields: ["FID", "MapNumb", "MapTitle", "ProdCode"],
     labelingInfo: [labelClass],
-    infoTemplate: template,
-    renderer: trailsMapsStyle
+    infoTemplate: template
   });
 
   var adventureMaps = new FeatureLayer( "https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/AD_BdryPoly/FeatureServer/0/",{
     name: "Adventure Maps",
     visible: false,     
     outFields: ["*"],
-    infoTemplate: template,
-    renderer: adventureMapsStyle
+    infoTemplate: template
   });
 
   var localMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/LCT_BdryPoly/FeatureServer/0/",{
     name: "Local Maps",
     visible: false,
     outFields: ["*"],
-    infoTemplate: template,
-    renderer: localMapsStyle
+    infoTemplate: template
   });
   var cityMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/DC_Point/FeatureServer/0/",{
     name: "City Maps",
@@ -147,11 +164,11 @@ require([
     style: "circle",
             size: 6,
             color: [255, 0, 0],      
-    outFields: ["*"],
-    infoTemplate: template
+    outFields: ["*"]
   });
-
-  map.addLayer(featureLayer);
+tiMaps.setRenderer(trailsMapsStyle);
+	tiMaps.setLabelingInfo([ labelClass ]);
+  map.addLayer(tiMaps);
   map.addLayer(adventureMaps);
   map.addLayer(localMaps);
   map.addLayer(cityMaps);
@@ -161,16 +178,17 @@ require([
     map: map,
     sources: [
       {
-        layer: featureLayer,
+        featureLayer: tiMaps,
         searchFields: ["MapTitle", "ProdCode"],
-        suggestionTemplate: "{MapTitle} ({ProdCode})",
+        suggestionTemplate: "${MapTitle} (${ProdCode})",
         exactMatch: false,
         outFields: ["MapTitle", "ProdCode"],
-        placeholder: "Search Maps"
+        placeholder: "Search Maps",
+		enableSuggestions: true
       }
     ],
     includeDefaultSources: false
-  });
+  }, "ui-dijit-search");
   searchWidget.startup();
  
   map.graphicsLayerIds.forEach(function (arrayItem) {
@@ -336,6 +354,7 @@ $.ajax({
 					  id: "modal-map",
 					  prefixUrl: "https://ailgup.github.io/natgeomap/images/",
 					  sequenceMode: true,
+					  maxZoomPixelRatio:5,
 					  tileSources: [
 						{
 						  type: "zoomifytileservice",

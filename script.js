@@ -338,7 +338,8 @@ var prefix = ((location.protocol === "https:") ? 'https:' : 'http:');
         url: prefix+'//ophir.alwaysdata.net/dezoomify/proxy.php?url=' + product_code + "_" + first_image + "/ImageProperties.xml",
         type: 'GET',
         crossDomain: true,
-        dataType: 'text',
+		contentType: 'text/plain',
+        //dataType: 'text',
         async: true,
         success: function(result) {
 			console.log("1st AJAX PASS");

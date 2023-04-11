@@ -339,7 +339,7 @@ var prefix = ((location.protocol === "https:") ? 'https:' : 'http:');
         url: product_code + "_" + first_image + "/ImageProperties.xml",
         type: 'GET',
         crossDomain: true,
-		contentType: 'text/plain',
+		//contentType: 'text/plain',
         dataType: 'text',
         async: true,
         success: function(result) {

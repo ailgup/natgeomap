@@ -335,7 +335,7 @@ function initMap(product_code, num_images, first_image) {
 var prefix = ((location.protocol === "https:") ? 'https:' : 'http:');
 
     $.ajax({
-        url: prefix+'//ophir.alwaysdata.net/dezoomify/proxy.php?url=' + product_code + "_" + first_image + "/ImageProperties.xml",
+        url: prefix+'//api.codetabs.com/v1/proxy/?quest=' + product_code + "_" + first_image + "/ImageProperties.xml",
         type: 'GET',
         crossDomain: true,
 		contentType: 'text/plain',
@@ -344,7 +344,7 @@ var prefix = ((location.protocol === "https:") ? 'https:' : 'http:');
         success: function(result) {
 			console.log("1st AJAX PASS");
             $.ajax({
-                url: prefix+'//ophir.alwaysdata.net/dezoomify/proxy.php?url=' + product_code + "_" + (first_image + 1) + "/ImageProperties.xml",
+                url: prefix+'//api.codetabs.com/v1/proxy/?quest=' + product_code + "_" + (first_image + 1) + "/ImageProperties.xml",
                 type: 'GET',
                 crossDomain: true,
                 dataType: 'text',

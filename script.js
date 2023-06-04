@@ -12,7 +12,8 @@ if (navigator.onLine) {
         "esri/Color",
         "esri/symbols/TextSymbol",
         "esri/layers/LabelClass",
-        "esri/symbols/SimpleMarkerSymbol"
+        "esri/symbols/SimpleMarkerSymbol",
+		"esri/tasks/query"
     ], function(
         Map,
         FeatureLayer,
@@ -26,7 +27,8 @@ if (navigator.onLine) {
         Color,
         TextSymbol,
         LabelClass,
-        SimpleMarkerSymbol
+        SimpleMarkerSymbol,
+		Query
     ) {
 
 
@@ -63,7 +65,7 @@ if (navigator.onLine) {
             var title = event.attributes.MapTitle;
             var code = event.attributes.ProdCode;
             var fid = event.attributes.FID;
-
+			
             var div = document.createElement("div");
             div.className = "";
             div.innerHTML =
@@ -133,7 +135,7 @@ if (navigator.onLine) {
             labelingInfo: [labelClass],
             infoTemplate: template
         });
-
+		console.log(tiMaps.getField("FID"));
         var adventureMaps = new FeatureLayer("https://services1.arcgis.com/YpWVqIbOT80sKVHP/arcgis/rest/services/AD_BdryPoly/FeatureServer/0/", {
             name: "Adventure Maps",
             visible: false,
@@ -175,7 +177,28 @@ if (navigator.onLine) {
         map.addLayer(localMaps);
         map.addLayer(cityMaps);
 
-
+		
+		/* run this code to build JSON for pulling down map dimensions */
+			/*
+			
+			
+		var query = new Query();
+		query.where="1=1";
+		query.outFields = [ "ProdCode" ];
+		var a = []
+		// Query for the features with the given object ID
+		tiMaps.queryFeatures(query, function(featureSet) {
+			featureSet.features.forEach(function(f){
+				a.push(f.attributes.ProdCode);	  
+		  });
+		  fetchURLsAndCreateJSON(a)
+		});
+		
+		
+			  */
+		/* end of JSON Fetch*/
+		
+		
         var searchWidget = new Search({
             map: map,
             sources: [{
@@ -257,6 +280,8 @@ if (navigator.onLine) {
         });
         document.getElementsByTagName('body')[0].appendChild(element);
 
+		
+
     });
 } //end of online
 else {
@@ -274,7 +299,7 @@ else {
 function open_popup(code) {
     var modal = document.getElementById("Modal");
     modal.style.visibility = "visible";
-    initMap("https://images.natgeomaps.com/PROD_ZOOM/" + code, 2, "_1");
+    initMap(code, 2, "_1");
 }
 
 $(".Close").click(function() {
@@ -336,54 +361,47 @@ var prefix = ((location.protocol === "https:") ? 'https:' : 'http:');
 
     $.ajax({
         //url: prefix+'//api.codetabs.com/v1/proxy/?quest=' + product_code + "_" + first_image + "/ImageProperties.xml",
-        url: product_code + "_" + first_image + "/ImageProperties.xml",
+        url: "https://ailgup.github.io/natgeomap/data_output.json",
         type: 'GET',
-        crossDomain: true,
-		//contentType: 'text/plain',
-        dataType: 'text',
         async: true,
         success: function(result) {
-			console.log("1st AJAX PASS");
-            $.ajax({
-                //url: prefix+'//api.codetabs.com/v1/proxy/?quest=' + product_code + "_" + first_image + "/ImageProperties.xml",
-				url: product_code + "_" + first_image + "/ImageProperties.xml",
-				type: 'GET',
-                crossDomain: true,
-                dataType: 'text',
-                async: true,
-                success: function(result2) {
-					console.log("2nd AJAX PASS");
+			
+			console.log(result);
+			//result = JSON.parse(result);
+			var found = result.filter(function(item) { return item.img.id === product_code; });
 
-                    viewer = OpenSeadragon({
-                        id: "modal-map",
-                        prefixUrl: "https://ailgup.github.io/natgeomap/images/",
-                        sequenceMode: true,
-                        maxZoomPixelRatio: 5,
-						zoomInButton:   "zoom-in",
-						zoomOutButton:  "zoom-out",
-						homeButton:     "home",
-						fullPageButton: "full-page",
-						nextButton:     "next",
-						previousButton: "previous",
-                        tileSources: [{
-                                type: "zoomifytileservice",
-                                width: parseInt(result.split('WIDTH="')[1].split('"')[0]),
-                                height: parseInt(result.split('HEIGHT="')[1].split('"')[0]),
-                                tilesUrl: product_code + "_" + first_image + "/"
-                            },
+			console.log(found);
+			console.log(found[0].img.data[1].WIDTH);
+            
 
-                            {
-                                type: "zoomifytileservice",
-                                width: parseInt(result2.split('WIDTH="')[1].split('"')[0]),
-                                height: parseInt(result2.split('HEIGHT="')[1].split('"')[0]),
-                                tilesUrl: product_code + "_" + (first_image + 1) + "/"
-                            }
-                        ]
-                    });
+			viewer = OpenSeadragon({
+				id: "modal-map",
+				prefixUrl: "https://ailgup.github.io/natgeomap/images/",
+				sequenceMode: true,
+				maxZoomPixelRatio: 5,
+				zoomInButton:   "zoom-in",
+				zoomOutButton:  "zoom-out",
+				homeButton:     "home",
+				fullPageButton: "full-page",
+				nextButton:     "next",
+				previousButton: "previous",
+				tileSources: [{
+						type: "zoomifytileservice",
+						width: parseInt(found[0].img.data[1].WIDTH),
+						height: parseInt(found[0].img.data[1].HEIGHT),
+						tilesUrl: "https://images.natgeomaps.com/PROD_ZOOM/"+product_code + "_" + first_image + "/"
+					},
+
+					{
+						type: "zoomifytileservice",
+						width: parseInt(found[0].img.data[2].WIDTH),
+						height: parseInt(found[0].img.data[2].HEIGHT),
+						tilesUrl: "https://images.natgeomaps.com/PROD_ZOOM/"+product_code + "_" + (first_image + 1) + "/"
+					}
+				]
+			});
+			
 					
-					
-                }
-            });
 
         }
     });
@@ -424,3 +442,28 @@ function closeNav() {
     document.getElementById("sidenav-button").style.display = "block";
     document.getElementById("layerlistdiv").style.display = "none";
 }
+
+function fetchURLsAndCreateJSON(urls) {
+  const data = [];
+
+  function downloadJSON(jsonData) {
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'data.json';
+    link.click();
+
+    URL.revokeObjectURL(url);
+  }
+	data.push(urls);
+	
+      const jsonData = JSON.stringify(data);
+      downloadJSON(jsonData);
+
+}
+
+
+
+

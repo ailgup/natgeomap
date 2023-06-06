@@ -176,28 +176,6 @@ if (navigator.onLine) {
         map.addLayer(adventureMaps);
         map.addLayer(localMaps);
         map.addLayer(cityMaps);
-
-		
-		/* run this code to build JSON for pulling down map dimensions */
-			/*
-			
-			
-		var query = new Query();
-		query.where="1=1";
-		query.outFields = [ "ProdCode" ];
-		var a = []
-		// Query for the features with the given object ID
-		tiMaps.queryFeatures(query, function(featureSet) {
-			featureSet.features.forEach(function(f){
-				a.push(f.attributes.ProdCode);	  
-		  });
-		  fetchURLsAndCreateJSON(a)
-		});
-		
-		
-			  */
-		/* end of JSON Fetch*/
-		
 		
         var searchWidget = new Search({
             map: map,
@@ -363,15 +341,15 @@ var prefix = ((location.protocol === "https:") ? 'https:' : 'http:');
         //url: prefix+'//api.codetabs.com/v1/proxy/?quest=' + product_code + "_" + first_image + "/ImageProperties.xml",
         url: "https://ailgup.github.io/natgeomap/data_output.json",
         type: 'GET',
+		dataType: "json",
         async: true,
         success: function(result) {
 			
 			console.log(result);
-			//result = JSON.parse(result);
-			var found = result.filter(function(item) { return item.img.id === product_code; });
+			var found = result.maps.filter(function(item) { return item.id === product_code; });
 
 			console.log(found);
-			console.log(found[0].img.data[1].WIDTH);
+			console.log(found[0].data[1].WIDTH);
             
 
 			viewer = OpenSeadragon({
@@ -387,15 +365,15 @@ var prefix = ((location.protocol === "https:") ? 'https:' : 'http:');
 				previousButton: "previous",
 				tileSources: [{
 						type: "zoomifytileservice",
-						width: parseInt(found[0].img.data[1].WIDTH),
-						height: parseInt(found[0].img.data[1].HEIGHT),
+						width: parseInt(found[0].data[1].WIDTH),
+						height: parseInt(found[0].data[1].HEIGHT),
 						tilesUrl: "https://images.natgeomaps.com/PROD_ZOOM/"+product_code + "_" + first_image + "/"
 					},
 
 					{
 						type: "zoomifytileservice",
-						width: parseInt(found[0].img.data[2].WIDTH),
-						height: parseInt(found[0].img.data[2].HEIGHT),
+						width: parseInt(found[0].data[2].WIDTH),
+						height: parseInt(found[0].data[2].HEIGHT),
 						tilesUrl: "https://images.natgeomaps.com/PROD_ZOOM/"+product_code + "_" + (first_image + 1) + "/"
 					}
 				]
@@ -443,26 +421,7 @@ function closeNav() {
     document.getElementById("layerlistdiv").style.display = "none";
 }
 
-function fetchURLsAndCreateJSON(urls) {
-  const data = [];
 
-  function downloadJSON(jsonData) {
-    const blob = new Blob([jsonData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'data.json';
-    link.click();
-
-    URL.revokeObjectURL(url);
-  }
-	data.push(urls);
-	
-      const jsonData = JSON.stringify(data);
-      downloadJSON(jsonData);
-
-}
 
 
 
